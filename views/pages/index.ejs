@@ -12,6 +12,28 @@
 <body>
   <header></header>
   <h1>Hello!</h1>
+  <main>
+    <h4>Search for Books</h4>
+    <!-- action visiths the route and method is the route method -->
+    <form action='/searches' method='post'>
+      <input type="text" name="search" placeholder="Enter a Title or Author" required>
+      <fieldset>
+        <label for="title">
+          <span>Title</span>
+          <input type="radio" name="search" value="title" required>
+        </label>
+        <label for="author">
+          <span>Author</span>
+          <input type="radio" name="search" value="author" required>
+        </label>
+      </fieldset>
+      <!-- <fieldset>
+
+      </fieldset> -->
+      <button type="submit">Search the Google Books API</button>
+    </form>
+
+  </main>
 
 </body>
 
