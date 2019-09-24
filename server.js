@@ -12,7 +12,7 @@ const superagent = require('superagent');
  */
 
 const app = express();
-const PORT = preocess.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
 /**
  * Middleware
