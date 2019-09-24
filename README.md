@@ -9,8 +9,8 @@ I build an app with a direct and powerful purpose. It does all of the things tha
 ### Author: Student/Group Name
 
 
-**Author**: Your Name Goes Here
-**Version**: 1.0.0 (increment the patch/fix version number if you make more commits past your first submission)
+**Author**: Elle Young & Jonathan Kimball (Version Date: 09.24.19)
+**Version**: 1.0.0 
 
 ## Overview
 <!-- Provide a high level overview of what this application is and why you are building it, beyond the fact that it's an assignment for a Code 301 class. (i.e. What's your problem domain?) -->
