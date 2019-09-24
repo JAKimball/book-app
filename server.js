@@ -14,6 +14,11 @@ const superagent = require('superagent');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.listen(PORT, () => {
+  console.log('listening on', PORT);
+});
+
+
 /**
  * Middleware
  */
@@ -28,6 +33,8 @@ app.set('view engine', 'ejs');
  */
 
 app.get('/hello', hello);
+
+
 
 function hello(request, response) {
   console.log(request.body);
