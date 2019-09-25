@@ -53,26 +53,32 @@ function searchForBooks(request, response){
   let url = `https://www.googleapis.com/books/v1/volumes?q=`;
 
   if(searchingBy === 'title'){
-    console.log('in first if');
+    // console.log('in first if')
     url = url+`intitle:${searchItem}`;
   }
   if(searchingBy === 'author'){
-    console.log('in first if');
+    // console.log('in first if')
     url = url+`inauthor:${searchItem}`;
   }
 
   superagent.get(url)
     .then(superagentResults => {
-      console.log(superagentResults.body.items);
+      // console.log(superagentResults.body.items);
       const library = superagentResults.body.items.map(book => {
-        return new book(book);
-      });
+        return new Book(book);
+      })
+      // console.log(library);
       response.send(library);
     });
 }
 function Book(info){
-  const placeholderImage = `https://i.imgur.com/J5LVHEL.jpg`;
+  // const placeholderImage = `https://i.imgur.com/J5LVHEL.jpg`
+  // console.log(info.volumeInfo);
   this.title= info.volumeInfo.title || 'no title available';
+  // this.name = info.volumeinfo.title
+  this.author = info.volumeInfo.authors.join(', ');
+  this.description = info.volumeInfo.description;
+  console.log(this);
 }
 // function hello(request, response) {
 //   // console.log(request.body);
