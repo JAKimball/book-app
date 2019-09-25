@@ -32,7 +32,21 @@
       </fieldset> -->
       <button type="submit">Search the Google Books API</button>
     </form>
+    <section>
+      <ul>
+        <% results.forEach(book => { %>
+        <li class='' data-id="<%= book.id %>">
+          <h4><%= book.title %></h4>
+          <p><%= book.author %></p>
+          <p><%= book.desription %></p>
 
+          <a href="/books/<%= book.id %>">Select this Book</a>
+
+        </li>
+        <% }) %>
+      </ul>
+
+    </section>
   </main>
 
 </body>
