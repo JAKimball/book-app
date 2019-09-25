@@ -6,24 +6,38 @@
 
 const express = require('express');
 const superagent = require('superagent');
+const pg = require('pg');
+
+/**
+ * Environment variables
+ */
+
+require('dotenv').config();
+const PORT = process.env.PORT || 3000;
 
 /**
  * Application Setup
  */
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-
 app.listen(PORT, () => {
   console.log('listening on', PORT);
+  // TODO: Change to reflect actual status.  This does not exactly work!
 });
 
+/**
+ * Database Setup
+ */
+
+const client = new pg.Client(process.env.DATABASE_URL);
+client.on('error', err => handleError(err));
+client.connect();
 
 /**
  * Middleware
  */
 
-app.use(express.static('./public'));
+app.use(express.static('./views/pages'));
 app.use(express.urlencoded({ extended: true }));
 
 app.set('view engine', 'ejs');
@@ -32,7 +46,8 @@ app.set('view engine', 'ejs');
  * API Routes
  */
 
-app.get('/', newSearch);
+app.get('/', getBookList);
+// app.get('/', newSearch);
 app.get('/hello', hello);
 app.post('/searches', searchForBooks);
 app.get('*', (request, response) => response.status(404).send('This route does not exist'));
@@ -66,7 +81,7 @@ function searchForBooks(request, response){
       // console.log(superagentResults.body.items);
       const library = superagentResults.body.items.map(book => {
         return new Book(book);
-      })
+      });
       // console.log(library);
       response.send(library);
     });
@@ -80,13 +95,44 @@ function Book(info){
   this.description = info.volumeInfo.description;
   console.log(this);
 }
-// function hello(request, response) {
-//   // console.log(request.body);
-//   console.log('hello')
-//   response.render('pages/index');
-// }
+
+function hello(request, response) {
+  // console.log(request.body);
+  console.log('hello');
+  response.render('pages/index');
+}
+
 function handleError(error, response) {
+  // TODO: Fix to work with no response
   response.render('pages/error', {error:'Uh Oh something went wrong :('});
 }
 
+function getBookList(request, response) {
+  // console.log(request.params.data_id)
 
+  let SQL = 'SELECT * FROM books;';
+  let values = [];
+
+  return client
+    .query(SQL, values)
+    .then(results => response.render('index', {results: results.rows}))
+    .catch(err => handleError(err, response));
+}
+
+
+
+//Elle's functions:
+// app.get('/data/:data_id', getDataInstance);
+// function getDataInstance(request, response) {
+//   console.log(request.params.data_id)
+
+//   let SQL = 'SELECT * FROM books WHERE id=$1;';
+//   let values = [request.params.data_id];
+
+//   return client.query(SQL, values)
+//   .then(results => response.render('index', {results: results.rows})
+//   .catch(err => handleError(err, response));
+// )
+
+//
+//
