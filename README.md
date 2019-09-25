@@ -8,12 +8,39 @@ I build an app with a direct and powerful purpose. It does all of the things tha
 
 ### Author: Student/Group Name
 
-
 **Author**: Elle Young & Jonathan Kimball (Version Date: 09.24.19)
 **Version**: 1.0.0 
 
+Lab 11 EJS
+
+Estimates time to complete FEATURE: SETUP REPO (create all files and push origin to git hub, create first pull request) 45 min
+
+Start time: 9 am 
+End time: 9:54 am
+Actual time needed: 54 minutes ~ error handling: add 20 minutes to troubleshoot nodemon, only to find that pg was not installed 
+
+FEATURE:TRELLO SETUP AND WALKTHROUGH Estimated time: 45 minutes 
+Start time: 10:00 am 
+End time: 10:45
+Actual time: 
+
+FEATURE HEROKU SETUP :Estimated 1hr
+Started 10:00am
+End Time 11:50am
+Actual time: 1 hr and 50 min
+
+FEATURE FORM Estimated time: 45 minutes
+Start time 12:30pm
+End time 1:00pm 
+Actual time 30 min
+
+FEATURE RENDER SEARCH RESULTS estimated time: 1 hr
+Start time: 12:50
+End time: ongoing
+
+
 ## Overview
-<!-- Provide a high level overview of what this application is and why you are building it, beyond the fact that it's an assignment for a Code 301 class. (i.e. What's your problem domain?) -->
+<!-- To build an app, capable of sea -->
 
 ## Getting Started
 <!-- What are the steps that a user must take in order to build this app on their own machine and get it running? -->
