@@ -40,13 +40,14 @@ End time: ongoing
 
 
 ## Overview
-<!-- To build an app, capable of sea -->
+<!-- To build an app, capable of searching an API for book information and storing favorite book data. We wanted a way to keep track of read books as well as add notes via a form to the database. We are using routes and redirects to  -->
 
 ## Getting Started
-<!-- What are the steps that a user must take in order to build this app on their own machine and get it running? -->
+<!-- YOU MUST HAVE a .env file with PORT and DATABASE_URL. YOU MUST HAVE dotenv, express, and pg installed on your machine to run this app.  -->
 
 ## Architecture
-<!-- Provide a detailed description of the application design. What technologies (languages, libraries, etc) you're using, and any other relevant design information. -->
+<!-- Provide a detailed description of the application design. What technologies (languages, libraries, etc) you're using, and any other relevant design information.
+ -->
 
 ## Change Log
 <!-- Use this area to document the iterative changes made to your application as each feature is successfully implemented. Use time stamps. Here's an examples:
