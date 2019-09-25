@@ -32,7 +32,7 @@ app.set('view engine', 'ejs');
  * API Routes
  */
 
-app.get('/', newSearch)
+app.get('/', newSearch);
 app.get('/hello', hello);
 app.post('/searches', searchForBooks);
 app.get('*', (request, response) => response.status(404).send('This route does not exist'));
@@ -40,24 +40,24 @@ app.get('*', (request, response) => response.status(404).send('This route does n
 //helper functions
 function newSearch(request, response){
   // console.log('I am alive')
-  response.render('pages/index')
+  response.render('pages/index');
 }
 
 function searchForBooks(request, response){
   // console.log(request.body.search);
-  console.log('search for books is alive')
+  console.log('search for books is alive');
   response.send(request.body);
   const searchItem = request.body.search[0];
   const searchingBy = request.body.search[1];
 
-  let url = `https://www.googleapis.com/books/v1/volumes?q=`
+  let url = `https://www.googleapis.com/books/v1/volumes?q=`;
 
   if(searchingBy === 'title'){
-    console.log('in first if')
+    console.log('in first if');
     url = url+`intitle:${searchItem}`;
   }
   if(searchingBy === 'author'){
-    console.log('in first if')
+    console.log('in first if');
     url = url+`inauthor:${searchItem}`;
   }
 
@@ -66,18 +66,21 @@ function searchForBooks(request, response){
       console.log(superagentResults.body.items);
       const library = superagentResults.body.items.map(book => {
         return new book(book);
-      })
+      });
       response.send(library);
-    })
+    });
 }
 function Book(info){
-  const placeholderImage = `https://i.imgur.com/J5LVHEL.jpg`
+  const placeholderImage = `https://i.imgur.com/J5LVHEL.jpg`;
   this.title= info.volumeInfo.title || 'no title available';
 }
-function hello(request, response) {
-  // console.log(request.body);
-  console.log('hello')
-  response.render('pages/index');
+// function hello(request, response) {
+//   // console.log(request.body);
+//   console.log('hello')
+//   response.render('pages/index');
+// }
+function handleError(error, response) {
+  response.render('pages/error', {error:'Uh Oh something went wrong :('});
 }
 
 
