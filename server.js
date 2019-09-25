@@ -13,7 +13,7 @@ const pg = require('pg');
  */
 
 require('dotenv').config();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 /**
  * Application Setup
@@ -37,9 +37,10 @@ client.connect();
  * Middleware
  */
 
-app.use(express.static('./views/pages'));
+app.use(express.static('./public'));
 app.use(express.urlencoded({ extended: true }));
 
+// Set view engine for server-side templating
 app.set('view engine', 'ejs');
 
 /**
@@ -86,6 +87,7 @@ function searchForBooks(request, response){
       response.send(library);
     });
 }
+
 function Book(info){
   // const placeholderImage = `https://i.imgur.com/J5LVHEL.jpg`
   // console.log(info.volumeInfo);
@@ -115,11 +117,9 @@ function getBookList(request, response) {
 
   return client
     .query(SQL, values)
-    .then(results => response.render('index', {results: results.rows}))
+    .then(results => response.render('pages/index', {results: results.rows}))
     .catch(err => handleError(err, response));
 }
-
-
 
 //Elle's functions:
 // app.get('/data/:data_id', getDataInstance);
@@ -129,10 +129,9 @@ function getBookList(request, response) {
 //   let SQL = 'SELECT * FROM books WHERE id=$1;';
 //   let values = [request.params.data_id];
 
-//   return client.query(SQL, values)
-//   .then(results => response.render('index', {results: results.rows})
+//   return client
+//   .query(SQL, values)
+//   .then(results => response.render('page/index', {results: results.rows}))
 //   .catch(err => handleError(err, response));
-// )
+// }
 
-//
-//
