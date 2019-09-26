@@ -62,7 +62,7 @@ app.post('/search', searchForBooks);
 // app.get('/search', x);
 // app.delete('/search', deleteBook);
 // app.put('/search', updateBook);
-app.get('/data/:data_id', getDataInstance);
+app.get('/books/:data_id', getDataInstance);
 app.get('*', (request, response) => response.status(404).send('This route does not exist'));
 
 
@@ -146,7 +146,7 @@ function getDataInstance(request, response) {
     .query(SQL, values)
     .then(results => {
       logDbResult(results, SQL);
-      response.render('page/index', { results: results.rows });
+      response.render('pages/index', { results: results.rows });
     })
     .catch(err => handleError(err, response));
 }
