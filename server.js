@@ -74,7 +74,7 @@ function newSearch(request, response){
 
 /**
  * Route Handlers
- */ 
+ */
 
  function getSearchForm(request, response){
   response.render('./pages/searches/new.ejs');
