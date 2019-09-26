@@ -101,11 +101,12 @@ function postAPIResults(request, response){
   superagent.get(url)
     .then(superagentResults => {
       // console.log(superagentResults.body.items);
+      //want to send results to new page called apiresults
       const library = superagentResults.body.items.map(book => {
         return new Book(book);
       });
       // console.log(library);
-      response.send(library);
+      response.render('./pages/searches/show', { results: library});
     });
 }
 
@@ -113,10 +114,11 @@ function Book(info){
   // const placeholderImage = `https://i.imgur.com/J5LVHEL.jpg`
   // console.log(info.volumeInfo);
   this.title= info.volumeInfo.title || 'no title available';
-  this.imgage = `https://i.imgur.com/J5LVHEL.jpg`
-  this.author = info.volumeInfo.authors; //.join(', ')
-  this.description = info.volumeInfo.description;
+  this.imgage = info.volumeInfo.imageLinks.thumbnail || `https://i.imgur.com/J5LVHEL.jpg`;
+  this.author = (info.volumeInfo.authors || ['No Author Available']).join(', ');
+  this.description = info.volumeInfo.description || 'No Description available';
   console.log(this);
+  this.isbn = info.volumeInfo.industryIdentifiers[0].identifier || 'No ISBN Available';
 }
 
 // function hello(request, response) {
