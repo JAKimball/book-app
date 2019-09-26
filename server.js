@@ -50,7 +50,10 @@ app.set('view engine', 'ejs');
 app.get('/', getBookList);
 // app.get('/', newSearch);
 app.get('/hello', hello);
-app.post('/searches', searchForBooks);
+app.post('/search', searchForBooks);
+// app.get('/search', x);
+app.delete('/search', deleteBook);
+app.put('/search', udpateBook);
 app.get('*', (request, response) => response.status(404).send('This route does not exist'));
 
 //helper functions
@@ -110,8 +113,6 @@ function handleError(error, response) {
 }
 
 function getBookList(request, response) {
-  // console.log(request.params.data_id)
-
   let SQL = 'SELECT * FROM books;';
   let values = [];
 
