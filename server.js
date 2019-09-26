@@ -56,13 +56,14 @@ app.set('view engine', 'ejs');
  */
 
 app.get('/', getBookList);
-// app.get('/', newSearch);
-app.get('/hello', hello);
-app.post('/search', searchForBooks);
-// app.get('/search', x);
+app.post('/search', postAPIResults);
+app.get('/books/:data_id', getDataInstance);
+app.get('/', newSearch);
+app.get('/search', getSearchForm)
+// app.get('/hello', hello);
+// app.get('/search', x); 
 // app.delete('/search', deleteBook);
 // app.put('/search', updateBook);
-app.get('/books/:data_id', getDataInstance);
 app.get('*', (request, response) => response.status(404).send('This route does not exist'));
 
 
@@ -73,9 +74,13 @@ function newSearch(request, response){
 
 /**
  * Route Handlers
- */
+ */ 
 
-function searchForBooks(request, response){
+ function getSearchForm(request, response){
+  response.render('./pages/searches/new.ejs');
+ }
+
+function postAPIResults(request, response){
   // console.log(request.body.search);
   console.log('search for books is alive');
   response.send(request.body);
@@ -96,11 +101,12 @@ function searchForBooks(request, response){
   superagent.get(url)
     .then(superagentResults => {
       // console.log(superagentResults.body.items);
+      //want to send results to new page called apiresults
       const library = superagentResults.body.items.map(book => {
         return new Book(book);
       });
       // console.log(library);
-      response.send(library);
+      response.render('./pages/searches/show', { results: library});
     });
 }
 
@@ -108,17 +114,18 @@ function Book(info){
   // const placeholderImage = `https://i.imgur.com/J5LVHEL.jpg`
   // console.log(info.volumeInfo);
   this.title= info.volumeInfo.title || 'no title available';
-  // this.name = info.volumeinfo.title
-  this.author = info.volumeInfo.authors.join(', ');
-  this.description = info.volumeInfo.description;
+  this.imgage = info.volumeInfo.imageLinks.thumbnail || `https://i.imgur.com/J5LVHEL.jpg`;
+  this.author = (info.volumeInfo.authors || ['No Author Available']).join(', ');
+  this.description = info.volumeInfo.description || 'No Description available';
   console.log(this);
+  this.isbn = info.volumeInfo.industryIdentifiers[0].identifier || 'No ISBN Available';
 }
 
-function hello(request, response) {
-  // console.log(request.body);
-  console.log('hello');
-  response.render('pages/index');
-}
+// function hello(request, response) {
+//   // console.log(request.body);
+//   console.log('hello');
+//   response.render('pages/index');
+// }
 
 function getBookList(request, response) {
   let SQL = 'SELECT * FROM books;';
@@ -151,6 +158,7 @@ function getDataInstance(request, response) {
     .catch(err => handleError(err, response));
 }
 
+
 // ======================================
 
 /**
@@ -178,6 +186,7 @@ function handleError(err, response) {
       .status(500)
       .render('pages/error', {
         header: 'Uh Oh something went wrong :(',
+        //TODO: create constructor to display JSON err obj for client
         error: JSON.stringify(err)
       });
   }
