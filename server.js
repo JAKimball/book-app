@@ -7,6 +7,7 @@
 const express = require('express');
 const superagent = require('superagent');
 const pg = require('pg');
+const methodOverride = require('method-override');
 
 /**
  * Environment variables
@@ -39,6 +40,13 @@ client.connect();
 
 app.use(express.static('./public'));
 app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride((request, response) => {
+  if (request.body && typeof request.body === 'object' && '_method' in request.body) {
+    let method = request.body._method;
+    delete request.body._method;
+    return method;
+  }
+}));
 
 // Set view engine for server-side templating
 app.set('view engine', 'ejs');
@@ -136,7 +144,10 @@ function getDataInstance(request, response) {
 
   return client
     .query(SQL, values)
-    .then(results => response.render('page/index', {results: results.rows}))
+    .then(results => {
+      logDbResult(results, SQL);
+      response.render('page/index', { results: results.rows });
+    })
     .catch(err => handleError(err, response));
 }
 
@@ -161,6 +172,7 @@ function handleError(err, response) {
   console.log('ERROR START ==================');
   console.error(err);
   console.log('ERROR END ====================');
+
   if (response) {
     response
       .status(500)
