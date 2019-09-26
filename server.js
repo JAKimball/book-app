@@ -44,7 +44,7 @@ app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 
 /**
- * API Routes
+ * Routes
  */
 
 app.get('/', getBookList);
@@ -52,15 +52,20 @@ app.get('/', getBookList);
 app.get('/hello', hello);
 app.post('/search', searchForBooks);
 // app.get('/search', x);
-app.delete('/search', deleteBook);
-app.put('/search', udpateBook);
+// app.delete('/search', deleteBook);
+// app.put('/search', updateBook);
+app.get('/data/:data_id', getDataInstance);
 app.get('*', (request, response) => response.status(404).send('This route does not exist'));
 
-//helper functions
+
 function newSearch(request, response){
   // console.log('I am alive')
   response.render('pages/index');
 }
+
+/**
+ * Route Handlers
+ */
 
 function searchForBooks(request, response){
   // console.log(request.body.search);
@@ -73,11 +78,11 @@ function searchForBooks(request, response){
 
   if(searchingBy === 'title'){
     // console.log('in first if')
-    url = url+`intitle:${searchItem}`;
+    url = `${url}intitle:${searchItem}`;
   }
   if(searchingBy === 'author'){
     // console.log('in first if')
-    url = url+`inauthor:${searchItem}`;
+    url = `${url}inauthor:${searchItem}`;
   }
 
   superagent.get(url)
@@ -107,11 +112,6 @@ function hello(request, response) {
   response.render('pages/index');
 }
 
-function handleError(error, response) {
-  // TODO: Fix to work with no response
-  response.render('pages/error', {error:'Uh Oh something went wrong :('});
-}
-
 function getBookList(request, response) {
   let SQL = 'SELECT * FROM books;';
   let values = [];
@@ -119,23 +119,54 @@ function getBookList(request, response) {
   return client
     .query(SQL, values)
     .then(results => {
-      console.log('This is how many entries we have in our database', results.rowCount); 
+      logDbResult(results, SQL);
       response.render('pages/index', {results: results.rows});
     })
-    .catch(err => handleError(err, response))
+    .catch(err => handleError(err, response));
 }
 
+// ========================================
 //Elle's functions:
-// app.get('/data/:data_id', getDataInstance);
-// function getDataInstance(request, response) {
-//   console.log(request.params.data_id)
 
-//   let SQL = 'SELECT * FROM books WHERE id=$1;';
-//   let values = [request.params.data_id];
+function getDataInstance(request, response) {
+  console.log(request.params.data_id);
 
-//   return client
-//   .query(SQL, values)
-//   .then(results => response.render('page/index', {results: results.rows}))
-//   .catch(err => handleError(err, response));
-// }
+  let SQL = 'SELECT * FROM books WHERE id=$1;';
+  let values = [request.params.data_id];
 
+  return client
+    .query(SQL, values)
+    .then(results => response.render('page/index', {results: results.rows}))
+    .catch(err => handleError(err, response));
+}
+
+// ======================================
+
+/**
+ * Helper Objects and Functions
+ */
+
+function logDbResult(pgResults, sql) {
+  console.log('===========================');
+  if (sql) {
+    console.log(`SQL --> ${sql}`);
+  }
+  console.log('Row Count', pgResults.rowCount);
+  if ((pgResults.rowCount !== 0) && (pgResults.rows[0])) {
+    console.log('first row:', pgResults.rows[0]);
+  }
+}
+
+function handleError(err, response) {
+  console.log('ERROR START ==================');
+  console.error(err);
+  console.log('ERROR END ====================');
+  if (response) {
+    response
+      .status(500)
+      .render('pages/error', {
+        header: 'Uh Oh something went wrong :(',
+        error: JSON.stringify(err)
+      });
+  }
+}
