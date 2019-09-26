@@ -118,8 +118,11 @@ function getBookList(request, response) {
 
   return client
     .query(SQL, values)
-    .then(results => response.render('pages/index', {results: results.rows}))
-    .catch(err => handleError(err, response));
+    .then(results => {
+      console.log('This is how many entries we have in our database', results.rowCount); 
+      response.render('pages/index', {results: results.rows});
+    })
+    .catch(err => handleError(err, response))
 }
 
 //Elle's functions:
