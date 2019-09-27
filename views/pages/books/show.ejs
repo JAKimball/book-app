@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../../layout/head') %>
+
+<body>
+  <%- include('../../layout/header') %>
+  <main>
+    <h4>Search for Books</h4>
+  </main>
+  <section>
+    <ul>
+      <% results.forEach(book => { %>
+      <li class='' data-id="<%= book.id %>">
+        <h4><%= book.title %></h4>
+        <img src="<%= book.image_url %>" alt="">
+        <p><%= book.author %></p>
+        <p><%= book.description %></p>
+        <p><%= book.isbn %></p>
+
+        <a href="/books/<%= book.id %>">Select this Book</a>
+
+      </li>
+      <% }) %>
+    </ul>
+
+  </section>
+  <%- include('../../layout/footer') %>
+</body>
+
+</html>
