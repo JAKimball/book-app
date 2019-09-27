@@ -1,7 +1,7 @@
-DROP DATABASE book_database;
-CREATE DATABASE book_database; 
+-- DROP DATABASE book_database;
+-- CREATE DATABASE book_database; 
 
-\c book_database;
+-- \c book_database;
 
 DROP TABLE IF EXISTS books;
 CREATE TABLE books (

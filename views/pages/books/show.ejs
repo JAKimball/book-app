@@ -17,9 +17,10 @@
         <p><%= book.author %></p>
         <p><%= book.description %></p>
         <p><%= book.isbn %></p>
-
-        <a href="/books/<%= book.id %>">Select this Book</a>
-
+        <p>Bookshelf: <%= book.bookshelf %></p>
+        <div>
+          <a href="/books/<%= book.id %>">Select this Book</a>
+        </div>
       </li>
       <% }) %>
     </ul>
