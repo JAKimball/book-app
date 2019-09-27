@@ -8,22 +8,23 @@
   <main>
     <h4>Search for Books</h4>
     <a href="/search">Search the Google API</a>
-  </main>
-  <section>
-    <ul>
-      <% results.forEach(book => { %>
-      <li class='' data-id="<%= book.id %>">
-        <h4><%= book.title %></h4>
-        <a href="/books/<%= book.id %>"><img src="<%= book.image_url %>" alt="Cover image"></a>
-        <p><%= book.author %></p>
-        <p>Bookshelf: <%= book.bookshelf %></p>
-        <div>
-          <a href="/books/<%= book.id %>">Select this Book</a>
-        </div>
-      </li>
-      <% }) %>
-    </ul>
-  </section>
+    <section>
+      <ul class='book_card'>
+        <% results.forEach(book => { %>
+          <li data-id="<%= book.id %>">
+            <h4><%= book.title %></h4>
+            <a href="/books/<%= book.id %>"><img src="<%= book.image_url %>" alt="Cover image"></a>
+            <p><%= book.author %></p>
+            <p>Bookshelf: <%= book.bookshelf %></p>
+            <div>
+              <a href="/books/<%= book.id %>">Select this Book</a>
+            </div>
+          </li>
+          <% }) %>
+        </ul>
+      </section>
+      
+    </main>
   <%- include('../layout/footer') %>
 </body>
 
