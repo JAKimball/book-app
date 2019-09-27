@@ -92,9 +92,7 @@ function postAPIResults(request, response){
     .then(superagentResults => {
       // console.log(superagentResults.body.items);
       //want to send results to new page called api results
-      const library = superagentResults.body.items.map(book => {
-        return new Book(book);
-      });
+      const library = superagentResults.body.items.map(book => new Book(book));
       // console.log(library);
       response.render('pages/searches/show', { results: library });
     });
@@ -106,6 +104,7 @@ function Book(info) {
   // console.log(info.volumeInfo);
   const placeholderImage = 'https://i.imgur.com/J5LVHEL.jpg';
   const obj = info.volumeInfo;
+  this.id = info.id;
   this.title = obj.title || 'no title available';
   this.imageUrl = toHttps(obj.imageLinks.thumbnail || placeholderImage);
   this.author = (obj.authors || ['No Author Available']).join(', ');

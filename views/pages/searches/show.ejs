@@ -15,7 +15,10 @@
         <h4><%= book.title %></h4>
         <a href="/books/<%= book.id %>"><img src="<%= book.imageUrl %>" alt="Cover image"></a>
         <p><%= book.author %></p>
-        <p>Bookshelf: <%= book.bookshelf %></p>
+        <p><%= book.description %></p>
+        <p><%= book.isbn %></p>
+
+        <!-- <p>Bookshelf: <%= book.bookshelf %></p> -->
         <div>
           <a href="/books/<%= book.id %>">Select this Book</a>
         </div>
