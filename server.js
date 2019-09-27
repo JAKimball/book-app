@@ -113,11 +113,12 @@ function postAPIResults(request, response){
 function Book(info) {
   // console.log(info.volumeInfo);
   const placeholderImage = 'https://i.imgur.com/J5LVHEL.jpg';
-  this.title= info.volumeInfo.title || 'no title available';
-  this.imageUrl = (info.volumeInfo.imageLinks.thumbnail || placeholderImage).replace(/^http:/i, 'https:');
-  this.author = (info.volumeInfo.authors || ['No Author Available']).join(', ');
-  this.description = info.volumeInfo.description || 'No Description available';
-  this.isbn = info.volumeInfo.industryIdentifiers[0].identifier || 'No ISBN Available';
+  const obj = info.volumeInfo;
+  this.title= obj.title || 'no title available';
+  this.imageUrl = (obj.imageLinks.thumbnail || placeholderImage).replace(/^http:/i, 'https:');obj;
+  this.author = (obj.authors || ['No Author Available']).join(', ');obj;
+  this.description = obj.description || 'No Description available';obj;
+  this.isbn = obj.industryIdentifiers[0].identifier || 'No ISBN Available';obj;
   console.log(this);
 }
 
@@ -128,7 +129,7 @@ function Book(info) {
 // }
 
 function getBookList(request, response) {
-  let SQL = 'SELECT * FROM books;';
+  let SQL = 'SELECT books.*, bookshelves.name as bookshelf FROM books INNER JOIN bookshelves ON books.bookshelf_id = bookshelves.id;';
   let values = [];
 
   return client
@@ -146,7 +147,7 @@ function getBookList(request, response) {
 function getDataInstance(request, response) {
   console.log(request.params.data_id);
 
-  let SQL = 'SELECT * FROM books WHERE id=$1;';
+  let SQL = 'SELECT books.*, bookshelves.name as bookshelf FROM books INNER JOIN bookshelves ON books.bookshelf_id = bookshelves.id WHERE books.id=$1;';
   let values = [request.params.data_id];
 
   return client
