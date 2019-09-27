@@ -59,9 +59,9 @@ app.get('/', getBookList);
 app.post('/search', postAPIResults);
 app.get('/books/:data_id', getDataInstance);
 app.get('/', newSearch);
-app.get('/search', getSearchForm)
+app.get('/search', getSearchForm);
 // app.get('/hello', hello);
-// app.get('/search', x); 
+// app.get('/search', x);
 // app.delete('/search', deleteBook);
 // app.put('/search', updateBook);
 app.get('*', (request, response) => response.status(404).send('This route does not exist'));
@@ -74,11 +74,11 @@ function newSearch(request, response){
 
 /**
  * Route Handlers
- */ 
+ */
 
- function getSearchForm(request, response){
+function getSearchForm(request, response){
   response.render('./pages/searches/new.ejs');
- }
+}
 
 function postAPIResults(request, response){
   // console.log(request.body.search);
@@ -106,19 +106,19 @@ function postAPIResults(request, response){
         return new Book(book);
       });
       // console.log(library);
-      response.render('./pages/searches/show', { results: library});
+      response.render('./pages/searches/show', { results: library });
     });
 }
 
-function Book(info){
-  // const placeholderImage = `https://i.imgur.com/J5LVHEL.jpg`
+function Book(info) {
   // console.log(info.volumeInfo);
+  const placeholderImage = 'https://i.imgur.com/J5LVHEL.jpg';
   this.title= info.volumeInfo.title || 'no title available';
-  this.imgage = info.volumeInfo.imageLinks.thumbnail || `https://i.imgur.com/J5LVHEL.jpg`;
+  this.imageUrl = (info.volumeInfo.imageLinks.thumbnail || placeholderImage).replace(/^http:/i, 'https:');
   this.author = (info.volumeInfo.authors || ['No Author Available']).join(', ');
   this.description = info.volumeInfo.description || 'No Description available';
-  console.log(this);
   this.isbn = info.volumeInfo.industryIdentifiers[0].identifier || 'No ISBN Available';
+  console.log(this);
 }
 
 // function hello(request, response) {
@@ -153,7 +153,7 @@ function getDataInstance(request, response) {
     .query(SQL, values)
     .then(results => {
       logDbResult(results, SQL);
-      response.render('pages/index', { results: results.rows });
+      response.render('pages/books/show', { results: results.rows });
     })
     .catch(err => handleError(err, response));
 }
