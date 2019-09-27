@@ -11,6 +11,8 @@ I build an app with a direct and powerful purpose. It does all of the things tha
 **Author**: Elle Young & Jonathan Kimball (Version Date: 09.24.19)
 **Version**: 1.0.0 
 
+Jon's Trello: https://trello.com/b/WeIz08K2/jons-book-app
+
 Lab 11 EJS
 
 Estimates time to complete FEATURE: SETUP REPO (create all files and push origin to git hub, create first pull request) 45 min
