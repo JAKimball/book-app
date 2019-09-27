@@ -5,9 +5,10 @@
 
 <body>
   <%- include('../layout/header') %>
+  <nav>
+  <a href="/search">Search the Google API</a>
+  </nav>
   <main>
-    <h4>Search for Books</h4>
-    <a href="/search">Search the Google API</a>
     <section>
       <ul class='book_card'>
         <% results.forEach(book => { %>
@@ -23,8 +24,8 @@
           <% }) %>
         </ul>
       </section>
-      
     </main>
+
   <%- include('../layout/footer') %>
 </body>
 
