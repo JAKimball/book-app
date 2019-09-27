@@ -58,32 +58,22 @@ app.set('view engine', 'ejs');
 app.get('/', getBookList);
 app.post('/search', postAPIResults);
 app.get('/books/:data_id', getDataInstance);
-app.get('/', newSearch);
 app.get('/search', getSearchForm);
-// app.get('/hello', hello);
-// app.get('/search', x);
 // app.delete('/search', deleteBook);
 // app.put('/search', updateBook);
 app.get('*', (request, response) => response.status(404).send('This route does not exist'));
-
-
-function newSearch(request, response){
-  // console.log('I am alive')
-  response.render('pages/index');
-}
 
 /**
  * Route Handlers
  */
 
 function getSearchForm(request, response){
-  response.render('./pages/searches/new.ejs');
+  response.render('pages/searches/new');
 }
 
 function postAPIResults(request, response){
   // console.log(request.body.search);
   console.log('search for books is alive');
-  response.send(request.body);
   const searchItem = request.body.search[0];
   const searchingBy = request.body.search[1];
 
@@ -101,24 +91,25 @@ function postAPIResults(request, response){
   superagent.get(url)
     .then(superagentResults => {
       // console.log(superagentResults.body.items);
-      //want to send results to new page called apiresults
-      const library = superagentResults.body.items.map(book => {
-        return new Book(book);
-      });
+      //want to send results to new page called api results
+      const library = superagentResults.body.items.map(book => new Book(book));
       // console.log(library);
-      response.render('./pages/searches/show', { results: library });
+      response.render('pages/searches/show', { results: library });
     });
 }
+
+const toHttps = (url) => url.replace(/^http:/i, 'https:');
 
 function Book(info) {
   // console.log(info.volumeInfo);
   const placeholderImage = 'https://i.imgur.com/J5LVHEL.jpg';
   const obj = info.volumeInfo;
-  this.title= obj.title || 'no title available';
-  this.imageUrl = (obj.imageLinks.thumbnail || placeholderImage).replace(/^http:/i, 'https:');obj;
-  this.author = (obj.authors || ['No Author Available']).join(', ');obj;
-  this.description = obj.description || 'No Description available';obj;
-  this.isbn = obj.industryIdentifiers[0].identifier || 'No ISBN Available';obj;
+  this.id = info.id;
+  this.title = obj.title || 'no title available';
+  this.imageUrl = toHttps(obj.imageLinks.thumbnail || placeholderImage);
+  this.author = (obj.authors || ['No Author Available']).join(', ');
+  this.description = obj.description || 'No Description available';
+  this.isbn = obj.industryIdentifiers[0].identifier || 'No ISBN Available';
   console.log(this);
 }
 
@@ -158,7 +149,6 @@ function getDataInstance(request, response) {
     })
     .catch(err => handleError(err, response));
 }
-
 
 // ======================================
 
