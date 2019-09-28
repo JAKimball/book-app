@@ -55,23 +55,65 @@ app.set('view engine', 'ejs');
  * Routes
  */
 
-app.get('/', getBookList);
-app.post('/search', postAPIResults);
-app.get('/books/:data_id', getDataInstance);
-app.get('/search', getSearchForm);
-// app.delete('/search', deleteBook);
-// app.put('/search', updateBook);
+
 app.get('*', (request, response) => response.status(404).send('This route does not exist'));
+
+app.get('/', getBookList);
+app.get('/search', getSearchForm);
+app.post('/search', postGoogleResults);
+app.get('/books/:data_id', getSingleBookDetail);
+app.get('/update/:data_id', getEditBookDetail);
+
+app.post('/books', postAddToShelf);
+app.delete('/books/:data_id', deleteBook);
+app.put('/update/:data_id', putUpdateBook);
+
 
 /**
  * Route Handlers
  */
 
+function getBookList(req, res) {
+  response.render('/pages/index');
+}
+
+function getSearchForm(req, res) {
+  response.render('/pages/searches/new');
+}
+
+function postGoogleResults(req, res) {
+  response.render('/pages/searches/show');
+}
+
+function getSingleBookDetail(req, res) {
+  response.render('/pages/books/detail');
+}
+
+function (req, res) {
+  response.render('/pages/');
+} 
+
+function getEditBookDetail(req, res) {
+  response.render('/pages/books/edit');
+}
+
 function getSearchForm(request, response){
   response.render('pages/searches/new');
 }
 
-function postAPIResults(request, response){
+function postAddToShelf(req, res) {
+  response.redirect('/');
+}
+
+function deleteBook(req, res) {
+  response.redirect('/');
+}
+
+function putUpdateBook(req, res) {
+  response.redirect('/');
+}
+
+function postGoogleResult(request, response){
   // console.log(request.body.search);
   console.log('search for books is alive');
   const searchItem = request.body.search[0];
@@ -135,7 +177,7 @@ function getBookList(request, response) {
 // ========================================
 //Elle's functions:
 
-function getDataInstance(request, response) {
+function getSingleBookDetail(request, response) {
   console.log(request.params.data_id);
 
   let SQL = 'SELECT books.*, bookshelves.name as bookshelf FROM books INNER JOIN bookshelves ON books.bookshelf_id = bookshelves.id WHERE books.id=$1;';
